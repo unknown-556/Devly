@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 
 const userSchema = mongoose.Schema({
-  Name: {
+  name: {
     type: String,
     required: true,
   },
@@ -11,7 +11,7 @@ const userSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  phoneNumber: {
+  phonenumber: {
     type: String
   },
   password: {

@@ -44,6 +44,26 @@ export const getPortfolio = async (req, res) => {
 
 
 
+export const getUser = async (req, res) => {
+    
+    try {
+        const name = req.user.name
+        const Portfolios = await Portfolio.find({ name: name });
+
+        if (Portfolios.length === 0) {
+            return res.status(404).json({ message: 'No Portfolios found ' });
+        } else {
+            console.log('Portfolios found successfully', Portfolios);
+            return res.json({ Portfolios });
+        }
+    } catch (error) {
+        console.error('Error while getting Portfolios');
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+
+
 
 export const getportfolio = async (req, res) => {
     try {

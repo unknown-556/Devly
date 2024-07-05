@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 // import { ObjectId } from 'mongodb';
 
 const PortfolioSchema = new mongoose.Schema({
-    Name: {
+    name: {
         type: String,
         ref: "User",
         required: true,
@@ -11,7 +11,7 @@ const PortfolioSchema = new mongoose.Schema({
         type: String,
         // required: true
     },
-    Links: {
+    portfolioLinks: {
         type: [String],
     },
     email: {
@@ -19,7 +19,7 @@ const PortfolioSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    phoneNumber: {
+    phonenumber: {
         type: String,
         ref: "User",
         required: true
@@ -30,7 +30,19 @@ const PortfolioSchema = new mongoose.Schema({
     experience: {
         type: String
     },
+    title: {
+        type: String
+    },
+    certificate: {
+        type: String
+    },
+    degree: {
+        type: String
+    },
     Skills: {
+        type: [String]
+    },
+    language: {
         type: [String]
     },
     account: [
