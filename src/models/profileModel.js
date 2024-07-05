@@ -1,15 +1,10 @@
 import mongoose from 'mongoose';
-// import { ObjectId } from 'mongodb';
 
 const PortfolioSchema = new mongoose.Schema({
     name: {
         type: String,
         ref: "User",
         required: true,
-    },
-    gender: {
-        type: String,
-        // required: true
     },
     portfolioLinks: {
         type: [String],
@@ -19,12 +14,12 @@ const PortfolioSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    phonenumber: {
+    phoneNumber: {
         type: String,
         ref: "User",
         required: true
     },
-    Bio: {
+    bio: {
         type: String
     },
     experience: {
@@ -39,48 +34,44 @@ const PortfolioSchema = new mongoose.Schema({
     degree: {
         type: String
     },
-    Skills: {
+    skills: {
         type: [String]
     },
-    language: {
+    languages: {
         type: [String]
     },
-    account: [
-        {
-            Instagram: {
-                type: String
-            },
-            Facebook: {
-                type: String
-            },
-            Github: {
-                type: String
-            },
-            LinkedIn: {
-                type: String
-            },
-            Twitter: {
-                type: String
-            },
-            
+    socialAccounts: {
+        instagram: {
+            type: String
+        },
+        facebook: {
+            type: String
+        },
+        github: {
+            type: String
+        },
+        linkedIn: {
+            type: String
+        },
+        twitter: {
+            type: String
         }
-    ],
-    Location: {
+    },
+    location: {
         type: String
-    },  
-    Stack: {
+    },
+    stack: {
         type: String,
     },
     profilePic: {
         type: String,
         default: '' 
-
     },
-    Status: {
+    status: {
         type: String,
-        default: "Available"
-      }
-    
+        enum: ['Available', 'Unavailable'],
+        default: 'Available'
+    }
 });
 
 const Portfolio = mongoose.model('Portfolio', PortfolioSchema);

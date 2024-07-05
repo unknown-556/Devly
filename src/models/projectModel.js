@@ -13,6 +13,9 @@ const ProjectSchema = new mongoose.Schema({
             image: {
                 type: String
             },
+            title: {
+                type: String
+            },
             About: {
                 type: String
             },
