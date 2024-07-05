@@ -7,25 +7,23 @@ const ProjectSchema = new mongoose.Schema({
         type: ObjectId,
         ref: 'user',
         required: true,
+    },   
+    image: {
+        type: String
     },
-    Project: [
-        {
-            image: {
-                type: String
-            },
-            title: {
-                type: String
-            },
-            About: {
-                type: String
-            },
-            link: {
-                type: String
-            }
-        }
-    ],
+    title: {
+        type: String
+    },
+    About: {
+        type: String
+    },
+    link: {
+        type: String
+    }
+ })
+    
 
-});
+
 
 const Project = mongoose.model('Project', ProjectSchema);
 

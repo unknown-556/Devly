@@ -31,12 +31,10 @@ export const createPortfolio = async (req, res) => {
             
         const portfolio = new Portfolio({
             ...req.body,
-            Name: user.name,
+            name: user.name,
             email: user.email,
-            phoneNumber: user.phonenumber,
+            phoneNumber: user.phoneNumber,
             profilePic: imageUrl,
-            Bio,
-            Stack,
         });
 
         await portfolio.save();
@@ -96,16 +94,32 @@ export const addProject = async (req, res) => {
          ...req.body,
          Id: user._id,
          image: imageUrl,
-         title,
-         link
      });
 
-     await Project.save();
+     await project.save();
      res.status(201).send(project);
  } catch (error) {
      console.error('Error adding project:', error);
      res.status(400).send({ error: error.message });
  }
+};
+
+export const getproject = async (req, res) => {
+    try {
+        const projectId = req.params.Id; 
+        const project = await Project.find({ Id: projectId});
+        if (!project) {
+            return res.status(404).json({ message: `No Project with ID: ${projectId} found` });
+        } else {
+            console.log('Project found successfully', project);
+            return res.status(200).json({ message: 'Project found successfully', project });
+            // return res.json({Project});
+            
+        }
+    } catch (error) {
+        console.error('Error while getting Project', error);
+        return res.status(500).json({ message: error.message });
+    }
 };
 
 

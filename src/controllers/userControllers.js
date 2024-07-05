@@ -28,20 +28,21 @@ export const signUp = async (req, res) => {
             res.status(409).json({messaage:'User with email already exists'})
         } else {
             const {
-                Name,
+                firstName,
+                lastName,
                 phoneNumber,
                 password,
                 email,
-                Stack
             } = req.body
-   
+
+
+            const name = `${firstName} ${lastName}`;
             const encryption = hashValue(password)
             const newUser = new User({
-                Name,
+                name,
                 phoneNumber,
                 password: encryption,
                 email,
-                Stack
             })
             await newUser.save()
             res.status(200).json({message: 'User registered succesfully',newUser})

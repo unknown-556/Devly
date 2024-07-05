@@ -19,7 +19,7 @@ const PortfolioSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    bio: {
+    Bio: {
         type: String
     },
     experience: {
