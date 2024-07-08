@@ -27,8 +27,8 @@ export const getPortfolios = async (req,res) => {
 export const getPortfolio = async (req, res) => {
     
     try {
-        const Stack = req.user.Stack
-        const Portfolios = await Portfolio.find({ Stack: Stack });
+        const stack = req.params.stack
+        const Portfolios = await Portfolio.find({ stack: stack });
 
         if (Portfolios.length === 0) {
             return res.status(404).json({ message: 'No Portfolios found ' });
@@ -47,8 +47,9 @@ export const getPortfolio = async (req, res) => {
 export const getUser = async (req, res) => {
     
     try {
-        const name = req.user.name
-        const Portfolios = await Portfolio.find({ name: name });
+        const firstName = req.params.firstName
+        const lastName = req.params.lastName
+        const Portfolios = await Portfolio.find({$or:[{firstName},{lastName}]});
 
         if (Portfolios.length === 0) {
             return res.status(404).json({ message: 'No Portfolios found ' });
@@ -73,8 +74,8 @@ export const getportfolio = async (req, res) => {
             return res.status(404).json({ message: `No Portfolio with ID: ${portfolioId} found` });
         } else {
             console.log('Portfolio found successfully', portfolio);
-            return res.status(200).json({ message: 'Portfolio found successfully', portfolio });
-            // return res.json({Portfolio});
+            // return res.status(200).json({ message: 'Portfolio found successfully', portfolio });
+            return res.json({Portfolio});
             
         }
     } catch (error) {

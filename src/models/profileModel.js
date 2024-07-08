@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
 
 const PortfolioSchema = new mongoose.Schema({
-    name: {
+    firstName: {
+        type: String,
+        ref: "User",
+        required: true,
+    },
+    lastName: {
         type: String,
         ref: "User",
         required: true,

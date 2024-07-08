@@ -27,13 +27,14 @@ export const createPortfolio = async (req, res) => {
             }
 
             
-        const fname = req.user.firstName
-        const lname = req.user.lastName    
+        // const fname = req.user.firstName
+        // const lname = req.user.lastName    
      
             // const name = `${firstName} ${lastName}`; 
         const portfolio = new Portfolio({
             ...req.body,
-            name: `${fname} ${lname}`,
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
             phoneNumber: user.phoneNumber,
             profilePic: imageUrl,
@@ -114,8 +115,8 @@ export const getproject = async (req, res) => {
             return res.status(404).json({ message: `No Project with ID: ${projectId} found` });
         } else {
             console.log('Project found successfully', project);
-            return res.status(200).json({ message: 'Project found successfully', project });
-            // return res.json({Project});
+            // return res.status(200).json({ message: 'Project found successfully', project });
+            return res.json({Project});
             
         }
     } catch (error) {
