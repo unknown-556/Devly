@@ -27,11 +27,13 @@ export const createPortfolio = async (req, res) => {
             }
 
             
-    
-            
+        const fname = req.user.firstName
+        const lname = req.user.lastName    
+     
+            // const name = `${firstName} ${lastName}`; 
         const portfolio = new Portfolio({
             ...req.body,
-            name: user.name,
+            name: `${fname} ${lname}`,
             email: user.email,
             phoneNumber: user.phoneNumber,
             profilePic: imageUrl,

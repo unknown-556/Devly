@@ -73,8 +73,8 @@ export const getportfolio = async (req, res) => {
             return res.status(404).json({ message: `No Portfolio with ID: ${portfolioId} found` });
         } else {
             console.log('Portfolio found successfully', portfolio);
-            // return res.status(200).json({ message: 'Portfolio found successfully', portfolio });
-            return res.json({Portfolio});
+            return res.status(200).json({ message: 'Portfolio found successfully', portfolio });
+            // return res.json({Portfolio});
             
         }
     } catch (error) {

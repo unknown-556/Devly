@@ -36,10 +36,11 @@ export const signUp = async (req, res) => {
             } = req.body
 
 
-            const name = `${firstName} ${lastName}`;
+            
             const encryption = hashValue(password)
             const newUser = new User({
-                name,
+                firstName,
+                lastName,
                 phoneNumber,
                 password: encryption,
                 email,
