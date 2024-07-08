@@ -5,7 +5,8 @@ import{ getPortfolios, getPortfolio, getportfolio, getUser } from '../controller
 
 router.get("/", getPortfolios)
 router.get('/portfolio/:stack',  getPortfolio);
-router.get("/single/:firstName", getUser);
+// router.get("/all/:firstName", getUser);
+router.get('/user/:firstName?/:lastName?', getUser);
 router.get("/:id", getportfolio)
 
 export default router

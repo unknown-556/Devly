@@ -49,7 +49,6 @@ const startServer = async () => {
 
 startServer();
 
-// app.get('/', (req, res) => {
-//      return res.redirect('home.html')
-//     // res.send('API IS RUNNING');
-// });
+app.get('/', (req, res) => {
+     res.send('API IS RUNNING');
+});

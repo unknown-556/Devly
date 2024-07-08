@@ -44,24 +44,40 @@ export const getPortfolio = async (req, res) => {
 
 
 
-export const getUser = async (req, res) => {
-    
-    try {
-        const firstName = req.params.firstName
-        const lastName = req.params.lastName
-        const Portfolios = await Portfolio.find({$or:[{firstName},{lastName}]});
 
-        if (Portfolios.length === 0) {
-            return res.status(404).json({ message: 'No Portfolios found ' });
+
+
+
+
+export const getUser = async (req, res) => {
+    try {
+        const { firstName, lastName } = req.params;
+
+        if (!firstName && !lastName) {
+            return res.status(400).json({ message: 'First name or last name must be provided' });
+        }
+
+        const query = { $or: [] };
+        if (firstName) query.$or.push({ firstName: firstName });
+        if (lastName) query.$or.push({ lastName: lastName });
+
+        const portfolios = await Portfolio.find(query);
+
+        if (portfolios.length === 0) {
+            return res.status(404).json({ message: 'No users found' });
         } else {
-            console.log('Portfolios found successfully', Portfolios);
-            return res.json({ Portfolios });
+            console.log('Portfolios found successfully', portfolios);
+            return res.json({ portfolios });
         }
     } catch (error) {
-        console.error('Error while getting Portfolios');
+        console.error('Error while getting portfolios', error);
         return res.status(500).json({ message: error.message });
     }
 };
+
+
+
+
 
 
 
