@@ -1,17 +1,17 @@
 import mongoose from 'mongoose';
 
 const PortfolioSchema = new mongoose.Schema({
-    firstName: {
+    firstname: {
         type: String,
         ref: "User",
         required: true,
     },
-    lastName: {
+    lastname: {
         type: String,
         ref: "User",
         required: true,
     },
-    portfolioLinks: {
+    portfolio: {
         type: [String],
     },
     email: {
@@ -19,12 +19,12 @@ const PortfolioSchema = new mongoose.Schema({
         ref: "User",
         required: true
     },
-    phoneNumber: {
+    number: {
         type: String,
         ref: "User",
         required: true
     },
-    Bio: {
+    bio: {
         type: String
     },
     experience: {
@@ -33,11 +33,11 @@ const PortfolioSchema = new mongoose.Schema({
     title: {
         type: String
     },
-    certificate: {
-        type: String
+    certificates: {
+        type: [String]
     },
-    degree: {
-        type: String
+    degrees: {
+        type: [String]
     },
     skills: {
         type: [String]
@@ -45,30 +45,27 @@ const PortfolioSchema = new mongoose.Schema({
     languages: {
         type: [String]
     },
-    socialAccounts: {
-        instagram: {
+    accounts: {
+        instagramUsername: {
             type: String
         },
-        facebook: {
+        githubUsername: {
             type: String
         },
-        github: {
+        linkedinUsername: {
             type: String
         },
-        linkedIn: {
-            type: String
-        },
-        twitter: {
+        twitterUsername: {
             type: String
         }
     },
-    location: {
+    country: {
         type: String
     },
     stack: {
         type: String,
     },
-    profilePic: {
+    profileImage: {
         type: String,
         default: '' 
     },

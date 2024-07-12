@@ -5,9 +5,11 @@ import authRoute from './authRoute.js'
 import postRoute from './profileRoute.js'
 import portfolioRoute from './portfolioRoute.js'
 import userRoute from './userRoute.js'
+import passwordRoute from './passwordRoute.js'
 
 const router = express.Router()
 
+router.use('/password', passwordRoute)
 router.use('/auth', authRoute)
 router.use('/post', postRoute )
 router.use('/portfolio', portfolioRoute)

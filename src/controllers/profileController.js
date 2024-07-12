@@ -33,11 +33,11 @@ export const createPortfolio = async (req, res) => {
             // const name = `${firstName} ${lastName}`; 
         const portfolio = new Portfolio({
             ...req.body,
-            firstName: user.firstName,
-            lastName: user.lastName,
+            firstname: user.firstname,
+            lastname: user.lastname,
             email: user.email,
-            phoneNumber: user.phoneNumber,
-            profilePic: imageUrl,
+            number: user.number,
+            profileImage: imageUrl,
         });
 
         await portfolio.save();
