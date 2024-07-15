@@ -8,12 +8,12 @@ import User from "../models/userModel.js";
 
 export const getPortfolios = async (req,res) => {
     try{
-        const allPortfolios = await Portfolio.find()
-        if(!allPortfolios){
+        const Portfolios = await Portfolio.find()
+        if(!Portfolios){
             res.status(400).json ({message:'No Portfolios found in database'})
         }else {
-            console.log({message:'Portfolios found successfully',allPortfolios})
-            return res.json({allPortfolios})
+            console.log({message:'Portfolios found successfully',Portfolios})
+            return res.json({Portfolios})
         }
     
         }   catch (error) {
@@ -61,13 +61,13 @@ export const getUser = async (req, res) => {
         if (firstName) query.$or.push({ firstName: firstName });
         if (lastName) query.$or.push({ lastName: lastName });
 
-        const portfolios = await Portfolio.find(query);
+        const Portfolios = await Portfolio.find(query);
 
-        if (portfolios.length === 0) {
+        if (Portfolios.length === 0) {
             return res.status(404).json({ message: 'No users found' });
         } else {
-            console.log('Portfolios found successfully', portfolios);
-            return res.json({ portfolios });
+            console.log('Portfolios found successfully', Portfolios);
+            return res.json({ Portfolios });
         }
     } catch (error) {
         console.error('Error while getting portfolios', error);
@@ -91,7 +91,7 @@ export const getportfolio = async (req, res) => {
         } else {
             console.log('Portfolio found successfully', portfolio);
             // return res.status(200).json({ message: 'Portfolio found successfully', portfolio });
-            return res.json({Portfolio});
+            return res.json({portfolio});
             
         }
     } catch (error) {
@@ -99,7 +99,6 @@ export const getportfolio = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
-
 
 
 

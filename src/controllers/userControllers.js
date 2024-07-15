@@ -98,7 +98,7 @@ export const signIn = async (req, res, next) => {
 export const getUserProfile = async (req, res) => {
     try {
         const userId = req.user._id;
-        const user = await Portfolio.findById(userId, 'Name email');
+        const user = await Portfolio.findById(userId, 'email');
 
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
