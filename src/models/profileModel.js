@@ -45,21 +45,15 @@ const PortfolioSchema = new mongoose.Schema({
     languages: {
         type: [String]
     },
-    accounts: {
-        instagramUsername: {
+    accounts: [{
+           link:{
             type: String
-        },
-        githubUsername: {
+           },
+           platform:{
             type: String
-        },
-        linkedinUsername: {
-            type: String
-        },
-        twitterUsername: {
-            type: String
-        }
-    },
-    country: {
+           }
+    }],
+    country: {  
         type: String
     },
     stack: {
