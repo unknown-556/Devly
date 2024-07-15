@@ -5,6 +5,7 @@ import { signUpValidator, signInValidator } from '../validators/authValidators.j
 import { formatZodError } from '../../errorMessage.js';
 import main from '../../server.js'; 
 import { generateToken } from '../utils/jwt.js';
+import { error } from 'console';
 
 const hashValue = (value) => {
     const hash = cryptoHash.createHash('sha256');
@@ -73,7 +74,7 @@ export const signIn = async (req, res, next) => {
         const comparePass = comparePasswords(password, user.password);
         if (!comparePass) {
             console.log({ message: 'Password is incorrect' });
-            return({})
+            return res.status(400).json({message:'Password is incorrect'})
         }
         
         
