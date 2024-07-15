@@ -8,7 +8,7 @@ import upload from "../config/multer.js";
 
 router.post("/profile", auth, upload.single('image'), createPortfolio)
 
-router.patch('/:id/status/toggle', toggleStatus);
+router.patch('/:id/status/toggle', auth, toggleStatus);
 
 router.post("/project", auth, upload.single('image'), addProject)
 

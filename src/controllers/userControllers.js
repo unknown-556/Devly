@@ -5,6 +5,7 @@ import { signUpValidator, signInValidator } from '../validators/authValidators.j
 import { formatZodError } from '../../errorMessage.js';
 import main from '../../server.js'; 
 import { generateToken } from '../utils/jwt.js';
+import { v2 as cloudinary } from 'cloudinary';
 import { error } from 'console';
 
 const hashValue = (value) => {
@@ -116,9 +117,49 @@ export const getUserProfile = async (req, res) => {
 };
 
 
+export const updateProfile = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        const { password, ...rest } = req.body;
+
+        let imageUrl = "";
+
+        if (req.file) {
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                resource_type: 'image',
+            });
+            imageUrl = result.secure_url;
+            console.log('Upload successful. Cloudinary response:', result);
+            rest.profilePic = imageUrl;
+        }
+
+        if (password) {
+            const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
+            rest.password = hashedPassword;
+        }
+
+        const updatedUser = await Portfolio.findByIdAndUpdate(
+            userId,
+            { $set: rest },
+            { new: true }
+        );
+
+        if (!updatedUser) {
+            return res.status(404).json({ message: `User with id: ${userId} not found` });
+        }
+
+        return res.status(200).json({ message: 'User updated successfully', updatedUser });
+    } catch (error) {
+        console.error('Error while updating User:', error);
+        res.status(400).json({ message: error.message });
+    }
+};
+
+
+
 
 
 export const logout = async (req, res, next) => {
 };
 
-export default { signUp, signIn, getUserProfile };
+export default { signUp, signIn, getUserProfile, updateProfile };

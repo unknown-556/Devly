@@ -16,7 +16,7 @@ export const createPortfolio = async (req, res) => {
        try {
             const user = await User.findById(req.user._id);
     
-            let imageUrl = null;
+            let imageUrl = "";
     
             if (req.file) {
                 const result = await cloudinary.uploader.upload(req.file.path, {
@@ -124,5 +124,8 @@ export const getproject = async (req, res) => {
         return res.status(500).json({ message: error.message });
     }
 };
+
+
+
 
 
