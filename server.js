@@ -16,6 +16,8 @@ const server = http.createServer(app);
 const io = new Server(server); 
 
 app.use(cors({ origin: '*' }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/connect', router);
