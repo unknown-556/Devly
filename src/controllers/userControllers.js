@@ -130,7 +130,7 @@ export const updateProfile = async (req, res) => {
             });
             imageUrl = result.secure_url;
             console.log('Upload successful. Cloudinary response:', result);
-            rest.profilePic = imageUrl;
+            rest.profileImage = imageUrl;
         }
 
         if (password) {
@@ -160,6 +160,14 @@ export const updateProfile = async (req, res) => {
 
 
 export const logout = async (req, res, next) => {
-};
+    try {
+      res.clearCookie('jwt');
+  
+      res.status(200).json({ message: 'Logout successful' });
+    } catch (error) {
+      res.status(500).json({ message: 'Internal server error' });
+      console.error('INTERNAL SERVER ERROR', error.message);
+    }
+  };
 
 export default { signUp, signIn, getUserProfile, updateProfile };

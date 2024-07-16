@@ -86,7 +86,7 @@ export const addProject = async (req, res) => {
             return res.status(404).json({ message: 'Portfolio not found' });
         }
  
-         let imageUrl = null;
+         let imageUrl = "";
  
          if (req.file) {
              const result = await cloudinary.uploader.upload(req.file.path, {
