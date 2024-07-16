@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.get('/profile', auth, getUserProfile);
 
-router.patch('/update/:id', auth, upload.single('image'), updateProfile)
+router.patch('/update/:id',  upload.single('image'), updateProfile)
 
 export default router;

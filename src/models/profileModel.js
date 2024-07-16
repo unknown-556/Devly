@@ -36,9 +36,22 @@ const PortfolioSchema = new mongoose.Schema({
     certificates: {
         type: [String]
     },
-    degrees: {
-        type: [String]
-    },
+    degrees:  [{
+        course:{
+         type: String
+        },
+        degree:{
+         type: String
+        },
+        institution:{
+            type: String
+        },
+        year:{
+            type: String
+        },   
+        
+
+    }],
     skills: {
         type: [String]
     },

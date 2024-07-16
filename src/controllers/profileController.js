@@ -78,7 +78,13 @@ export const toggleStatus = async (req, res) => {
 
 export const addProject = async (req, res) => {
     try {
-         const user = await User.findById(req.user._id);
+        const { id } = req.params;
+
+        const portfolio = await Portfolio.findById(id);
+
+        if (!portfolio) {
+            return res.status(404).json({ message: 'Portfolio not found' });
+        }
  
          let imageUrl = null;
  
@@ -95,7 +101,7 @@ export const addProject = async (req, res) => {
          
      const project = new Project({
          ...req.body,
-         Id: user._id,
+         Id: portfolio._id,
          image: imageUrl,
      });
 
@@ -116,7 +122,7 @@ export const getproject = async (req, res) => {
         } else {
             console.log('Project found successfully', project);
             // return res.status(200).json({ message: 'Project found successfully', project });
-            return res.json({Project});
+            return res.json({project});
             
         }
     } catch (error) {
