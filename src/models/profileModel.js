@@ -18,7 +18,6 @@ const PortfolioSchema = new mongoose.Schema({
         type: String,
         ref: "User",
         required: true,
-        unique: true
         
     },
     number: {
