@@ -50,8 +50,9 @@ export const createPortfolio = async (req, res) => {
         await portfolio.save();
         res.status(201).send(portfolio);
     } catch (error) {
-        console.error('Error creating Portfolio:', error);
         res.status(400).send({ error: error.message });
+        console.error('Error creating Portfolio:', error);
+        return res.json({message: error.message})
     }
 };
 
@@ -61,9 +62,9 @@ export const createPortfolio = async (req, res) => {
 
 export const toggleStatus = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { email } = req.user;
 
-        const portfolio = await Portfolio.findById(id);
+        const portfolio = await Portfolio.findOne({ email });
 
         if (!portfolio) {
             return res.status(404).json({ message: 'Portfolio not found' });
@@ -74,11 +75,12 @@ export const toggleStatus = async (req, res) => {
         portfolio.status = newStatus;
         await portfolio.save();
 
-        res.status(200).json({ status: portfolio.status });
+        return res.json({ status: portfolio.status });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 
 

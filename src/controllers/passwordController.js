@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import User from '../models/userModel.js';
-import bcrypt from 'bcryptjs';
+import { generateToken } from '../utils/jwt.js';
 
 export const requestPasswordReset = async (req, res) => {
     const { email } = req.body;
@@ -117,8 +117,11 @@ export const requestPasswordReset = async (req, res) => {
         };
 
         await transporter.sendMail(mailOptions);
+        
+        console.log(passwordtoken)
 
-        res.status(200).json({ message: 'Password reset link sent' });
+        return res.json({ passwordtoken});
+
     } catch (error) {
         console.log({error})
         res.status(500).json({ message: error.message });
@@ -152,3 +155,4 @@ export const requestPasswordReset = async (req, res) => {
 //         res.status(500).json({ message: error.message });
 //     }
 // };
+

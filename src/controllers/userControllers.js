@@ -50,10 +50,12 @@ export const signUp = async (req, res) => {
             await newUser.save()
             res.status(200).json({message: 'User registered succesfully',newUser})
             console.log('User registered succesfully',newUser);
+            return res.json({message: 'User registered succesfully'})
         }
     } catch (error) {
         res.status(500).json({message: error.message})
         console.log('INTERNAL SERVER ERROR',error.message)
+        return res.json({message: error.message})
     }
 }
 
@@ -102,7 +104,7 @@ export const getUserProfile = async (req, res) => {
     try {
         const userId = req.user._id;
         const email = req.user.email
-        const user = await Portfolio.find({email});
+        const user = await Portfolio.findOne({email});
 
         if (!user) {
             return res.status(404).json({ error: 'User not found' });
@@ -121,8 +123,7 @@ export const getUserProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const userId = req.params.id;
-        const { password, ...rest } = req.body;
+        const userId = req.user.email;
 
         let imageUrl = "";
 
@@ -135,10 +136,6 @@ export const updateProfile = async (req, res) => {
             rest.profileImage = imageUrl;
         }
 
-        if (password) {
-            const hashedPassword = crypto.createHash('sha256').update(password).digest('hex');
-            rest.password = hashedPassword;
-        }
 
         const updatedUser = await Portfolio.findByIdAndUpdate(
             userId,
@@ -147,7 +144,7 @@ export const updateProfile = async (req, res) => {
         );
 
         if (!updatedUser) {
-            return res.status(404).json({ message: `User with id: ${userId} not found` });
+            return res.status(404).json({ message: `User with email: ${userId} not found` });
         }
 
         return res.status(200).json({ message: 'User updated successfully', updatedUser });
@@ -160,7 +157,7 @@ export const updateProfile = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-      const userId = req.params.id;
+      const userId = req.user._id;
       const { password, ...rest } = req.body;
   
       if (password) {

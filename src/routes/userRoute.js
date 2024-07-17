@@ -12,7 +12,7 @@ router.patch('/update/:id',  upload.single('profileImage'), updateProfile)
 
 router.post('/logout', auth, logout)
 
-router.patch('/change/:id', updateUser)
+router.patch('/change', auth, updateUser)
 
 router.delete('/delete/:id', deleteSingleUser)
 
