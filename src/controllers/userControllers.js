@@ -54,9 +54,10 @@ export const signUp = async (req, res) => {
             return res.json({message: 'User registered succesfully'})
         }
     } catch (error) {
-        res.status(500).json({message: error.message})
         console.log('INTERNAL SERVER ERROR',error.message)
-        return res.json({message: error.message})
+        return res.status(400).json({message: "User with email already exists"})
+        
+        // return res.json({message: error.message})
     }
 }
 
