@@ -17,7 +17,9 @@ const PortfolioSchema = new mongoose.Schema({
     email: {
         type: String,
         ref: "User",
-        required: true
+        required: true,
+        unique: true
+        
     },
     number: {
         type: String,

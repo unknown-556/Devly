@@ -156,6 +156,41 @@ export const updateProfile = async (req, res) => {
 };
 
 
+export const updateUser = async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const { password, ...rest } = req.body;
+  
+      if (password) {
+        const hashedPassword = cryptoHash.createHash('sha256').update(password).digest('hex');
+  
+        const updatedUser = await User.findByIdAndUpdate(
+          userId,
+          { ...rest, password: hashedPassword },
+          { new: true }
+        );
+  
+        if (!updatedUser) {
+          return res.status(404).json({ message: `User with id: ${userId} not found` });
+        }
+  
+        return res.status(200).json({ message: 'User updated successfully', updatedUser });
+      } else {
+        const updatedUser = await User.findByIdAndUpdate(userId, rest, { new: true });
+  
+        if (!updatedUser) {
+          return res.status(404).json({ message: `User with id: ${userId} not found` });
+        }
+  
+        return res.status(200).json({ message: 'User updated successfully', updatedUser });
+      }
+    } catch (error) {
+      console.error('Error while updating User:', error);
+      res.status(400).json({ message: error.message });
+    }
+  };
+
+
 
 
 

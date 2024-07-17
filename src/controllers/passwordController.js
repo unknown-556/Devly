@@ -1,7 +1,6 @@
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import User from '../models/userModel.js';
-import bcrypt from 'bcryptjs';
 
 export const requestPasswordReset = async (req, res) => {
     const { email } = req.body;
@@ -22,6 +21,9 @@ export const requestPasswordReset = async (req, res) => {
 
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
             auth: {
                 user: process.env.EMAIL,
                 pass: process.env.EMAIL_PASSWORD,
@@ -47,27 +49,27 @@ export const requestPasswordReset = async (req, res) => {
     }
 };
 
-export const resetPassword = async (req, res) => {
-    const { token, newPassword } = req.body;
+// export const resetPassword = async (req, res) => {
+//     const { token, newPassword } = req.body;
 
-    try {
-        const user = await User.findOne({
-            resetPasswordToken: token,
-            resetPasswordExpires: { $gt: Date.now() },
-        });
+//     try {
+//         const user = await User.findOne({
+//             resetPasswordToken: token,
+//             resetPasswordExpires: { $gt: Date.now() },
+//         });
 
-        if (!user) {
-            return res.status(400).json({ message: 'Password reset token is invalid or has expired' });
-        }
+//         if (!user) {
+//             return res.status(400).json({ message: 'Password reset token is invalid or has expired' });
+//         }
 
-        user.password = newPassword;
-        user.resetPasswordToken = undefined;
-        user.resetPasswordExpires = undefined;
+//         user.password = newPassword;
+//         user.resetPasswordToken = undefined;
+//         user.resetPasswordExpires = undefined;
 
-        await user.save();
+//         await user.save();
 
-        res.status(200).json({ message: 'Password has been reset' });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
-};
+//         res.status(200).json({ message: 'Password has been reset' });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };

@@ -15,6 +15,11 @@ cloudinary.config({
 export const createPortfolio = async (req, res) => {
        try {
             const user = await User.findById(req.user._id);
+ 
+            // const profile = await Portfolio.findOne({for:[{email}]})
+            // if (profile) {
+            //     res.status(409).json({message:'You already have a portfolio'})
+            // } else{
     
             let imageUrl = "";
     
@@ -30,15 +35,17 @@ export const createPortfolio = async (req, res) => {
         // const fname = req.user.firstName
         // const lname = req.user.lastName    
      
-            // const name = `${firstName} ${lastName}`; 
-        const portfolio = new Portfolio({
-            ...req.body,
-            firstname: user.firstname,
-            lastname: user.lastname,
-            email: user.email,
-            number: user.number,
-            profileImage: imageUrl,
-        });
+            // const name = `${firstName} ${lastName}`;
+            
+               
+                    const portfolio = new Portfolio({
+                        ...req.body,
+                        firstname: user.firstname,
+                        lastname: user.lastname,
+                        email: user.email,
+                        number: user.number,
+                        profileImage: imageUrl,
+                    });
 
         await portfolio.save();
         res.status(201).send(portfolio);
