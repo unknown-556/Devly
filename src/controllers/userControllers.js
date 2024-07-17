@@ -25,11 +25,10 @@ export const signUp = async (req, res) => {
     }
     try {
         const { email}=req.body 
-        const user = await User.findOne({for:[{email}]})
-        if (user) {
-            console.log({message: "user already exists"})
-            return res.status(400).json({message:'User with email already exists'})
-        } else {
+        const existingUser = await User.findOne({ $or: [ { email }] });
+      if (existingUser) {
+        return res.status(409).json({ message: 'User already exists', user: existingUser });
+      } else {
             const {
                 firstname,
                 lastname,
@@ -55,7 +54,7 @@ export const signUp = async (req, res) => {
         }
     } catch (error) {
         console.log('INTERNAL SERVER ERROR',error.message)
-        return res.status(400).json({message: "User with email already exists"})
+        return res.status(400).json({message: error.message})
         
         // return res.json({message: error.message})
     }
