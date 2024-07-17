@@ -205,4 +205,20 @@ export const logout = async (req, res, next) => {
     }
   };
 
-export default { signUp, signIn, getUserProfile, updateProfile };
+
+  export const deleteSingleUser = async (req, res) => {
+    try {
+        const userId = req.params.id
+        const userToDelete = await Portfolio.findByIdAndDelete(userId)
+        if (!userToDelete) {
+            res.status(400).json({message: `No user with such id:${userId} found`})
+        } else {
+            res.status(200).json({message: 'User deleted successfully', userToDelete})
+        }
+    } catch (error) {
+        console.error('Error while deleting user:',error);
+        res.status(500).json({message: error.messaage})
+    }
+}  
+
+export default { signUp, signIn, getUserProfile, updateProfile, deleteSingleUser };
