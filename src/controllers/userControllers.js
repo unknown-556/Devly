@@ -219,6 +219,22 @@ export const logout = async (req, res, next) => {
         console.error('Error while deleting user:',error);
         res.status(500).json({message: error.messaage})
     }
-}  
+} 
 
-export default { signUp, signIn, getUserProfile, updateProfile, deleteSingleUser };
+export const getSingleUser = async (req, res) => {
+    try {
+        const email = req.params.email
+        const singleUser = await User.findOne({email: email})
+        if (!singleUser) {
+        res.status(400).json({message: `No user with such id:${email} found`})
+    }   else {
+        res.status(200).json({message: 'User found successfully', singleUser})
+        console.log(singleUser)
+    }
+    }   catch (error) {
+        console.error('Error while getting single user',error);
+        res.status(500).json({message: error.messaage})
+    }
+} 
+
+export default { signUp, signIn, getUserProfile, updateProfile, deleteSingleUser, getSingleUser };

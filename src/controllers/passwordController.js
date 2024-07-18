@@ -1,7 +1,14 @@
+import cryptoHash from 'crypto';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import User from '../models/userModel.js';
 import { generateToken } from '../utils/jwt.js';
+
+const hashValue = (value) => {
+    const hash = cryptoHash.createHash('sha256');
+    hash.update(value);
+    return hash.digest('hex');
+};
 
 export const requestPasswordReset = async (req, res) => {
     const { email } = req.body;
@@ -98,22 +105,22 @@ export const requestPasswordReset = async (req, res) => {
                     <p>Hello,</p>
                     <p>You requested a password reset. Click the button below to reset your password.</p>
                     <p style="margin: 20px 0;">
-                        <a href="http://${req.headers.host}/reset/${passwordtoken}"
+                        <a href="https://devly-ruddy.vercel.app/NewPassword/${passwordtoken}"
                            style="background-color: #0DA16C; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
                            Reset Password
                         </a>
                     </p>
                     <p>If the button above does not work, please click on the following link, or paste this into your browser to complete the process:</p>
                             <p>
-                                <a href="http://${req.headers.host}/reset/${passwordtoken}">
-                                    "http://${req.headers.host}/reset/${passwordtoken}"
+                                <a href="http://https://devly-ruddy.vercel.app/NewPassword/${passwordtoken}">
+                                    "https://devly-ruddy.vercel.app/NewPassword/${passwordtoken}"
                                 </a>
                             </p>
                             <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
                 </div>
                 <div class="footer">
                     <p>Thank you,<br/><h1>Devly_</h1></p>
-                    <p><a href="https://devlyng.vercel.app/">Visit our website</a></p>
+                    <p><a href="https://devlyng.vercel.app">Visit our website</a></p>
                 </div>
             </div>
         </body>
@@ -136,28 +143,31 @@ export const requestPasswordReset = async (req, res) => {
 
 // "http://${req.headers.host}/reset/${passwordtoken}"
 
-// export const resetPassword = async (req, res) => {
-//     const { token, newPassword } = req.body;
+export const resetPassword = async (req, res) => {
+    const { passwordtoken, password } = req.body;
 
-//     try {
-//         const user = await User.findOne({
-//             resetPasswordToken: token,
-//             resetPasswordExpires: { $gt: Date.now() },
-//         });
+    try {
+        const user = await User.findOne({
+            resetPasswordToken: passwordtoken,
+            resetPasswordExpires: { $gt: Date.now() },
+        });
 
-//         if (!user) {
-//             return res.status(400).json({ message: 'Password reset token is invalid or has expired' });
-//         }
+        if (!user) {
+            return res.status(400).json({ message: 'Password reset token is invalid or has expired' });
+        }
 
-//         user.password = newPassword;
-//         user.resetPasswordToken = undefined;
-//         user.resetPasswordExpires = undefined;
+        const encryption = hashValue(password);
 
-//         await user.save();
+        user.password = encryption;
+        user.resetPasswordToken = undefined;
+        user.resetPasswordExpires = undefined;
 
-//         res.status(200).json({ message: 'Password has been reset' });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
+        await user.save();
+
+        res.status(200).json({ message: 'Password has been reset' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 
