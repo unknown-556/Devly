@@ -23,6 +23,8 @@ export const createPortfolio = async (req, res) => {
     
             let imageUrl = "";
 
+            const data = profileImage
+
                 if (data) {
                     const uploadResponse = await cloudinary.uploader.upload(`data:image/jpeg;base64,${data}`, {
                         resource_type: 'image',
