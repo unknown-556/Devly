@@ -128,13 +128,17 @@ export const updateProfile = async (req, res) => {
 
         let imageUrl = "";
 
-        if (req.file) {
-            const result = await cloudinary.uploader.upload(req.file.path, {
+        const { profileImage } = req.body;
+
+        if (profileImage) {
+            // Upload base64 image to Cloudinary
+            const uploadResponse = await cloudinary.uploader.upload(profileImage, {
                 resource_type: 'image',
             });
-            imageUrl = result.secure_url;
+            imageUrl = uploadResponse.secure_url;
+        
             console.log('Upload successful. Cloudinary response:', result);
-            rest.profileImage = imageUrl;
+            profileImage = imageUrl;
         }
 
 

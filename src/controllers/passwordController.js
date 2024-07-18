@@ -132,7 +132,7 @@ export const requestPasswordReset = async (req, res) => {
         
         console.log(passwordtoken)
 
-        return res.json({ passwordtoken});
+        return res.status(200).json({ passwordtoken});
 
     } catch (error) {
         console.log({error})

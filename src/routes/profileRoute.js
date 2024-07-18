@@ -10,7 +10,7 @@ router.post("/profile", auth, upload.single('image'), createPortfolio)
 
 router.patch('/status/toggle', auth, toggleStatus);
 
-router.post("/project/:id", auth, upload.single('profileImage'), addProject)
+router.post("/project/:id", auth, upload.single('image'), addProject)
 
 router.get("/all/:Id", getproject)
 
