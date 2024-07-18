@@ -27,7 +27,7 @@ export const createPortfolio = async (req, res) => {
 
             if (profileImage) {
                 // Upload base64 image to Cloudinary
-                const uploadResponse = await cloudinary.uploader.upload(`data:image/png;base64,${profileImage}`, {
+                const uploadResponse = await cloudinary.uploader.upload(profileImage, {
                     resource_type: 'image',
                 });
                 imageUrl = uploadResponse.secure_url;
