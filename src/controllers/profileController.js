@@ -23,16 +23,15 @@ export const createPortfolio = async (req, res) => {
     
             let imageUrl = "";
 
-            const { data } = req.body;
+            const { profileImage } = req.body;
 
-                if (data) {
-                    const uploadResponse = await cloudinary.uploader.upload(`data:image/jpeg;base64,${data}`, {
-                        resource_type: 'image',
-                    });
-                    imageUrl = uploadResponse.secure_url;
-                    console.log('Upload successful. Cloudinary response:', uploadResponse);
-                }
-
+            if (profileImage) {
+                // Upload base64 image to Cloudinary
+                const uploadResponse = await cloudinary.uploader.upload(`data:image/png;base64,${profileImage}`, {
+                    resource_type: 'image',
+                });
+                imageUrl = uploadResponse.secure_url;
+            }
 
             
         // const fname = req.user.firstName
