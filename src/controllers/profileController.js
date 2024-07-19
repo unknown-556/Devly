@@ -1,5 +1,4 @@
 import Portfolio from '../models/profileModel.js';
-import Project from '../models/projectModel.js';
 import User from '../models/userModel.js';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
@@ -87,60 +86,108 @@ export const toggleStatus = async (req, res) => {
 
 
 
+// export const addProject = async (req, res) => {
+//     try {
+//         const { id } = req.params;
+
+//         const portfolio = await Portfolio.findById(id);
+
+//         if (!portfolio) {
+//             return res.status(404).json({ message: 'Portfolio not found' });
+//         }
+ 
+//         let imageUrl = "";
+
+//         const { image } = req.body;
+
+//         if (image) {
+//             // Upload base64 image to Cloudinary
+//             const uploadResponse = await cloudinary.uploader.upload(profileImage, {
+//                 resource_type: 'image',
+//             });
+//             imageUrl = uploadResponse.secure_url;
+//         }
+
+         
+ 
+         
+//      const project = new Project({
+//          ...req.body,
+//          Id: portfolio._id,
+//          image: imageUrl,
+//      });
+
+//      await project.save();
+//      res.status(201).send(project);
+//  } catch (error) {
+//      console.error('Error adding project:', error);
+//      res.status(400).send({ error: error.message });
+//  }
+// };
+
+// export const getproject = async (req, res) => {
+//     try {
+//         const projectId = req.params.Id; 
+//         const project = await Project.find({ Id: projectId});
+//         if (!project) {
+//             return res.status(404).json({ message: `No Project with ID: ${projectId} found` });
+//         } else {
+//             console.log('Project found successfully', project);
+//             // return res.status(200).json({ message: 'Project found successfully', project });
+//             return res.json({project});
+            
+//         }
+//     } catch (error) {
+//         console.error('Error while getting Project', error);
+//         return res.status(500).json({ message: error.message });
+//     }
+// };
+
+
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
 export const addProject = async (req, res) => {
     try {
-        const { id } = req.params;
-
-        const portfolio = await Portfolio.findById(id);
-
-        if (!portfolio) {
-            return res.status(404).json({ message: 'Portfolio not found' });
-        }
- 
+        const {  project } = req.body;
         let imageUrl = "";
 
-        const { image } = req.body;
-
-        if (image) {
+        if (req.file) {
             // Upload base64 image to Cloudinary
-            const uploadResponse = await cloudinary.uploader.upload(profileImage, {
+            const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
                 resource_type: 'image',
             });
             imageUrl = uploadResponse.secure_url;
         }
 
-         
- 
-         
-     const project = new Project({
-         ...req.body,
-         Id: portfolio._id,
-         image: imageUrl,
-     });
+        const newProject = {
+            image: imageUrl,
+            title: project.title,
+            About: project.About,
+            link: project.link,
+        };
 
-     await project.save();
-     res.status(201).send(project);
- } catch (error) {
-     console.error('Error adding project:', error);
-     res.status(400).send({ error: error.message });
- }
-};
+        const { id } = req.params;
 
-export const getproject = async (req, res) => {
-    try {
-        const projectId = req.params.Id; 
-        const project = await Project.find({ Id: projectId});
-        if (!project) {
-            return res.status(404).json({ message: `No Project with ID: ${projectId} found` });
-        } else {
-            console.log('Project found successfully', project);
-            // return res.status(200).json({ message: 'Project found successfully', project });
-            return res.json({project});
-            
+        // Find the portfolio by ID and add the new project
+        const updatedPortfolio = await Portfolio.findByIdAndUpdate(
+            id,
+            { $push: { projects: newProject } },
+            { new: true } 
+        );
+
+        if (!updatedPortfolio) {
+            return res.status(404).json({ message: 'Portfolio not found' });
         }
+
+        res.status(200).json(updatedPortfolio);
     } catch (error) {
-        console.error('Error while getting Project', error);
-        return res.status(500).json({ message: error.message });
+        res.status(500).json({ message: 'Server error', error });
     }
 };
 

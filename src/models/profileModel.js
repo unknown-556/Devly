@@ -77,6 +77,20 @@ const PortfolioSchema = new mongoose.Schema({
         type: String,
         default: '' 
     },
+    projects: [{
+        image: {
+            type: String
+        },
+        title: {
+            type: String
+        },
+        About: {
+            type: String    
+        },
+        link: {
+            type: String
+        }
+    }],
     status: {
         type: String,
         enum: ['Available', 'Unavailable'],
