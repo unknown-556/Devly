@@ -215,9 +215,9 @@ export const logout = async (req, res, next) => {
         const userId = req.params.id
         const userToDelete = await Portfolio.findByIdAndDelete(userId)
         if (!userToDelete) {
-            res.status(400).json({message: `No user with such id:${userId} found`})
+            res.status(400).json({message: `No portfolio with such id:${userId} found`})
         } else {
-            res.status(200).json({message: 'User deleted successfully', userToDelete})
+            res.status(200).json({message: 'Portfolio deleted successfully', userToDelete})
         }
     } catch (error) {
         console.error('Error while deleting user:',error);

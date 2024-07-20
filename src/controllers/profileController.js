@@ -2,6 +2,7 @@ import Portfolio from '../models/profileModel.js';
 import User from '../models/userModel.js';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
+import { formatZodError } from '../../errorMessage.js';
 
 dotenv.config();
 
@@ -154,13 +155,19 @@ cloudinary.config({
 
 export const addProject = async (req, res) => {
     try {
+        console.log('Request body:', req.body);
         const {  project } = req.body;
+
+        console.log('Project data:', project); 
+
         let imageUrl = "";
 
-        if (req.file) {
-            // Upload base64 image to Cloudinary
-            const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
-                resource_type: 'image',
+        if (project.image) {
+            
+            console.log('Uploading image to Cloudinary'); 
+
+            const uploadResponse = await cloudinary.uploader.upload(project.image, {
+                resource_type: 'auto',
             });
             imageUrl = uploadResponse.secure_url;
         }
@@ -171,6 +178,8 @@ export const addProject = async (req, res) => {
             About: project.About,
             link: project.link,
         };
+
+        console.log('New project data:', newProject)
 
         const { id } = req.params;
 
@@ -187,7 +196,9 @@ export const addProject = async (req, res) => {
 
         res.status(200).json(updatedPortfolio);
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
+
+        res.status(500).json({ message:  error.message });
+        console.log({message: error.message})
     }
 };
 
