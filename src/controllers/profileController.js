@@ -155,35 +155,32 @@ cloudinary.config({
 
 export const addProject = async (req, res) => {
     try {
-        console.log('Request body:', req.body);
-        const {  project } = req.body;
+        console.log('Request body:', req.body); 
 
-        console.log('Project data:', project); 
+        const { title, about, link } = req.body;
 
         let imageUrl = "";
 
-        if (project.image) {
-            
-            console.log('Uploading image to Cloudinary'); 
-
-            const uploadResponse = await cloudinary.uploader.upload(project.image, {
-                resource_type: 'auto',
+        if (req.file) {
+            const uploadResponse = await cloudinary.uploader.upload(req.file.path, {
+                resource_type: 'image',
             });
             imageUrl = uploadResponse.secure_url;
+            console.log('Image uploaded successfully:', imageUrl); 
         }
 
         const newProject = {
             image: imageUrl,
-            title: project.title,
-            About: project.About,
-            link: project.link,
+            title,
+            About: about,
+            link,
         };
 
-        console.log('New project data:', newProject)
+        console.log('New project data:', newProject);
 
         const { id } = req.params;
 
-        // Find the portfolio by ID and add the new project
+        
         const updatedPortfolio = await Portfolio.findByIdAndUpdate(
             id,
             { $push: { projects: newProject } },
