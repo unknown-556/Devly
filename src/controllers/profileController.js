@@ -18,7 +18,7 @@ export const createPortfolio = async (req, res) => {
  
             // const profile = await Portfolio.findOne({for:[{email}]})
             // if (profile) {
-            //     res.status(409).json({message:'You already have a portfolio'})
+            //     res.status(400).json({message:'You already have a portfolio'})
             // } else{
     
             let imageUrl = "";
@@ -87,62 +87,8 @@ export const toggleStatus = async (req, res) => {
 
 
 
-// export const addProject = async (req, res) => {
-//     try {
-//         const { id } = req.params;
 
-//         const portfolio = await Portfolio.findById(id);
 
-//         if (!portfolio) {
-//             return res.status(404).json({ message: 'Portfolio not found' });
-//         }
- 
-//         let imageUrl = "";
-
-//         const { image } = req.body;
-
-//         if (image) {
-//             // Upload base64 image to Cloudinary
-//             const uploadResponse = await cloudinary.uploader.upload(profileImage, {
-//                 resource_type: 'image',
-//             });
-//             imageUrl = uploadResponse.secure_url;
-//         }
-
-         
- 
-         
-//      const project = new Project({
-//          ...req.body,
-//          Id: portfolio._id,
-//          image: imageUrl,
-//      });
-
-//      await project.save();
-//      res.status(201).send(project);
-//  } catch (error) {
-//      console.error('Error adding project:', error);
-//      res.status(400).send({ error: error.message });
-//  }
-// };
-
-// export const getproject = async (req, res) => {
-//     try {
-//         const projectId = req.params.Id; 
-//         const project = await Project.find({ Id: projectId});
-//         if (!project) {
-//             return res.status(404).json({ message: `No Project with ID: ${projectId} found` });
-//         } else {
-//             console.log('Project found successfully', project);
-//             // return res.status(200).json({ message: 'Project found successfully', project });
-//             return res.json({project});
-            
-//         }
-//     } catch (error) {
-//         console.error('Error while getting Project', error);
-//         return res.status(500).json({ message: error.message });
-//     }
-// };
 
 
 

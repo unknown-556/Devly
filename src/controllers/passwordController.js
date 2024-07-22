@@ -36,6 +36,9 @@ export const requestPasswordReset = async (req, res) => {
                 user: process.env.EMAIL,
                 pass: process.env.EMAIL_PASSWORD,
             },
+            tls: {
+                rejectUnauthorized: false
+            } 
         });
 
         const mailOptions = {
@@ -169,5 +172,3 @@ export const resetPassword = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-

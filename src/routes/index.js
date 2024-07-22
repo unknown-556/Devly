@@ -6,6 +6,7 @@ import postRoute from './profileRoute.js'
 import portfolioRoute from './portfolioRoute.js'
 import userRoute from './userRoute.js'
 import passwordRoute from './passwordRoute.js'
+import messageRoute from './messageRoute.js'
 
 const router = express.Router()
 
@@ -14,6 +15,7 @@ router.use('/auth', authRoute)
 router.use('/post', postRoute )
 router.use('/portfolio', portfolioRoute)
 router.use('/get', userRoute)
+router.use('/message', messageRoute)
 
 router.patch('/portfolios/:id/status', async (req, res) => {
     const { id } = req.params;
