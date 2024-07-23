@@ -16,6 +16,17 @@ const server = http.createServer(app);
 const io = new Server(server); 
 
 app.use(cors({ origin: '*' }));
+
+app.use((req, res, next) => {
+    res.setHeader(
+        "Content-Security-Policy",
+        "default-src 'self'; connect-src 'self' https://connect-i645.onrender.com"
+    );
+    next();
+});
+
+
+
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(bodyParser.json());
