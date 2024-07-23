@@ -20,7 +20,7 @@ app.use(cors({ origin: '*' }));
 app.use((req, res, next) => {
     res.setHeader(
         "Content-Security-Policy",
-        "default-src 'self'; connect-src 'self' https://connect-i645.onrender.com"
+        "default-src 'self'; connect-src 'self' https://connect-i645.onrender.com;  img-src 'self' https://res.cloudinary.com;"
     );
     next();
 });
