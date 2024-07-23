@@ -13,7 +13,7 @@ export const message = async (req, res) => {
         await newMessage.save();
         console.log('Message saved successfully', newMessage);
         
-        return res.status(200).json({ message: 'Message saved successfully', newMessage });
+        return res.status(200).json({ message: 'Message sent successfully', newMessage });
     } catch (error) {
         console.log('INTERNAL SERVER ERROR', error.message);
         return res.status(400).json({ message: error.message });
