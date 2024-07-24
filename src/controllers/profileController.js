@@ -15,18 +15,28 @@ cloudinary.config({
 export const createPortfolio = async (req, res) => {
        try {
             const user = await User.findById(req.user._id);
+
+            const email = await User.findOne({ email: req.user.email });
+
+            if (!email) {
+                return res.status(404).json({ message: 'User not found' });
+            }
+
+            const existingPortfolio = await Portfolio.findOne({ email: req.user.email });
+
+
+            if (existingPortfolio) {
+                return res.status(400).json({ message: 'You already have a portfolio' });
+            }
  
-            // const profile = await Portfolio.findOne({for:[{email}]})
-            // if (profile) {
-            //     res.status(400).json({message:'You already have a portfolio'})
-            // } else{
+            
     
             let imageUrl = "";
 
             const { profileImage } = req.body;
 
             if (profileImage) {
-                // Upload base64 image to Cloudinary
+                
                 const uploadResponse = await cloudinary.uploader.upload(profileImage, {
                     resource_type: 'image',
                 });

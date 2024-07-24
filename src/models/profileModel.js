@@ -89,7 +89,15 @@ const PortfolioSchema = new mongoose.Schema({
         },
         link: {
             type: String
-        }
+        },
+        accounts: [{
+            link:{
+             type: String
+            },
+            platform:{
+             type: String
+            }
+     }]
     }],
     status: {
         type: String,
