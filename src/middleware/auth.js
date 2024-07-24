@@ -25,7 +25,7 @@ export const auth = async (req, res, next) => {
         next();
     } catch (error) {
         console.log(`Authentication failed: Invalid token - ${error.message}`);
-        return res.status(401).send({ error: 'Invalid token. Please authenticate.' });
+        return res.status(401).send({ error: 'You are not logged in.' });
     }
 };
 

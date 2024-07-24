@@ -23,7 +23,7 @@ export const requestPasswordReset = async (req, res) => {
         const passwordtoken = crypto.randomBytes(20).toString('hex');
 
         user.resetPasswordToken = passwordtoken;
-        user.resetPasswordExpires = Date.now() + 3600000; // 1 hour
+        user.resetPasswordExpires = Date.now() + 1800000; 
 
         await user.save();
 
@@ -120,6 +120,7 @@ export const requestPasswordReset = async (req, res) => {
                                 </a>
                             </p>
                             <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
+                            <p><h1>This link wil expire in 30 minutes.</h1></p>
                 </div>
                 <div class="footer">
                     <p>Thank you,<br/><h1>Devly_</h1></p>
