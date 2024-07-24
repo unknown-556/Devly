@@ -256,4 +256,39 @@ export const getSingleUser = async (req, res) => {
     }
 } 
 
+
+export const deleteProject = async (req, res) => {
+    try {
+      const { id, projectId } = req.params;
+  
+      // Find the portfolio by ID
+      const portfolio = await Portfolio.findById(id);
+  
+      if (!portfolio) {
+        return res.status(404).json({ message: 'Portfolio not found' });
+      }
+  
+      // Find the project index within the portfolio's projects array
+      const projectIndex = portfolio.projects.findIndex(
+        (project) => project._id.toString() === projectId
+      );
+  
+      if (projectIndex === -1) {
+        return res.status(404).json({ message: 'Project not found' });
+      }
+  
+      // Remove the project from the array
+      portfolio.projects.splice(projectIndex, 1);
+  
+      // Save the updated portfolio
+      await portfolio.save();
+  
+      res.status(200).json({ message: 'Project deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Server error', error: error.message });
+      console.error('Error deleting project:', error);
+    }
+  };
+  
+
 export default { signUp, signIn, getUserProfile, updateProfile, deleteSingleUser, getSingleUser };

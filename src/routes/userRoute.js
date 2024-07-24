@@ -1,5 +1,5 @@
 import express from 'express';
-import { deleteSingleUser, getSingleUser, getUserProfile, logout, updateProfile, updateUser } from '../controllers/userControllers.js';
+import { deleteSingleUser, getSingleUser, getUserProfile, logout, updateProfile, updateUser , deleteProject} from '../controllers/userControllers.js';
 import auth from '../middleware/auth.js';
 import upload from "../config/multer.js";
 
@@ -17,5 +17,8 @@ router.patch('/change', auth, updateUser)
 router.delete('/delete/:id', deleteSingleUser)
 
 router.get('/single/:email', getSingleUser)
+
+
+router.delete('/portfolio/:id/project/:projectId', deleteProject);
 
 export default router;
