@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get('/profile', auth, getUserProfile);
 
-router.patch('/update/:id',  upload.single('profileImage'), updateProfile)
+router.patch('/update/:id', auth,  upload.single('profileImage'), updateProfile)
 
 router.post('/logout', auth, logout)
 

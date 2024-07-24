@@ -83,7 +83,7 @@ export const signIn = async (req, res, next) => {
         }
         
         
-        const accessToken = generateToken(user._id, user.name);
+        const accessToken = generateToken( user.name);
         
 
         user.token = accessToken;
@@ -124,23 +124,22 @@ export const getUserProfile = async (req, res) => {
 
 export const updateProfile = async (req, res) => {
     try {
-        const userId = req.user.email;
+        const userId = req.params.id;
 
         let imageUrl = "";
 
-        const { profileImage } = req.body;
+        const { profileImage, ...rest } = req.body;
 
         if (profileImage) {
-            // Upload base64 image to Cloudinary
+            
             const uploadResponse = await cloudinary.uploader.upload(profileImage, {
                 resource_type: 'image',
             });
             imageUrl = uploadResponse.secure_url;
-        
-            console.log('Upload successful. Cloudinary response:', result);
+
+            console.log('Upload successful. Cloudinary response:', uploadResponse);
             rest.profileImage = imageUrl;
         }
-
 
         const updatedUser = await Portfolio.findByIdAndUpdate(
             userId,
@@ -149,13 +148,13 @@ export const updateProfile = async (req, res) => {
         );
 
         if (!updatedUser) {
-            return res.status(404).json({ message: `User with email: ${userId} not found` });
+            return res.status(404).json({ message: `User with ID: ${userId} not found` });
         }
 
         return res.status(200).json({ message: 'User updated successfully', updatedUser });
     } catch (error) {
         console.error('Error while updating User:', error);
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
     }
 };
 
@@ -261,14 +260,12 @@ export const deleteProject = async (req, res) => {
     try {
       const { id, projectId } = req.params;
   
-      // Find the portfolio by ID
       const portfolio = await Portfolio.findById(id);
   
       if (!portfolio) {
         return res.status(404).json({ message: 'Portfolio not found' });
       }
   
-      // Find the project index within the portfolio's projects array
       const projectIndex = portfolio.projects.findIndex(
         (project) => project._id.toString() === projectId
       );
@@ -277,10 +274,8 @@ export const deleteProject = async (req, res) => {
         return res.status(404).json({ message: 'Project not found' });
       }
   
-      // Remove the project from the array
       portfolio.projects.splice(projectIndex, 1);
   
-      // Save the updated portfolio
       await portfolio.save();
   
       res.status(200).json({ message: 'Project deleted successfully' });
@@ -289,6 +284,6 @@ export const deleteProject = async (req, res) => {
       console.error('Error deleting project:', error);
     }
   };
-  
 
+  
 export default { signUp, signIn, getUserProfile, updateProfile, deleteSingleUser, getSingleUser };
