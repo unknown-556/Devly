@@ -113,61 +113,86 @@ cloudinary.config({
 
 export const addProject = async (req, res) => {
     try {
-      console.log('Request body:', req.body);
-      console.log('Request files:', req.files);
-  
-      const { title, about, link } = req.body;
-  
-      let imageUrl = "";
-      let imageUrl2 = "";
-      let imageUrl3 = "";
-  
-      if (req.files.image) {
-        imageUrl = req.files.image[0].path;
-      }
-  
-      if (req.files.image2) {
-        imageUrl2 = req.files.image2[0].path;
-      }
-  
-      if (req.files.image3) {
-        imageUrl3 = req.files.image3[0].path;
-      }
-  
-      const uploadPromises = [
-        imageUrl ? cloudinary.uploader.upload(imageUrl) : Promise.resolve(null),
-        imageUrl2 ? cloudinary.uploader.upload(imageUrl2) : Promise.resolve(null),
-        imageUrl3 ? cloudinary.uploader.upload(imageUrl3) : Promise.resolve(null),
-      ];
-  
-      const [uploadResponse1, uploadResponse2, uploadResponse3] = await Promise.all(uploadPromises);
-  
-      const newProject = {
-        image: uploadResponse1 ? uploadResponse1.secure_url : '',
-        image2: uploadResponse2 ? uploadResponse2.secure_url : '',
-        image3: uploadResponse3 ? uploadResponse3.secure_url : '',
-        title,
-        about,
-        link,
-      };
-  
-      console.log('New project data:', newProject);
-  
-      const { id } = req.params;
-  
-      const updatedPortfolio = await Portfolio.findByIdAndUpdate(
-        id,
-        { $push: { projects: newProject } },
-        { new: true }
-      );
-  
-      if (!updatedPortfolio) {
-        return res.status(404).json({ message: 'Portfolio not found' });
-      }
-  
-      res.status(200).json(updatedPortfolio);
+        console.log('Request body:', req.body); 
+        console.log('Request files:', req.files); // Log the files to check if they are received
+
+        const { title, about, link } = req.body;
+
+        let imageUrl = "";
+        let imageUrl2 = "";
+        let imageUrl3 = "";
+
+        if (req.files) {
+            const uploadPromises = [];
+
+            if (req.files.image && req.files.image[0]) {
+                uploadPromises.push(
+                    cloudinary.uploader.upload(req.files.image[0].path, {
+                        resource_type: 'image',
+                    }).then(uploadResponse => {
+                        imageUrl = uploadResponse.secure_url;
+                        console.log('Image 1 uploaded successfully:', imageUrl);
+                    }).catch(error => {
+                        console.error('Error uploading image 1:', error);
+                    })
+                );
+            }
+
+            if (req.files.image2 && req.files.image2[0]) {
+                uploadPromises.push(
+                    cloudinary.uploader.upload(req.files.image2[0].path, {
+                        resource_type: 'image',
+                    }).then(uploadResponse => {
+                        imageUrl2 = uploadResponse.secure_url;
+                        console.log('Image 2 uploaded successfully:', imageUrl2);
+                    }).catch(error => {
+                        console.error('Error uploading image 2:', error);
+                    })
+                );
+            }
+
+            if (req.files.image3 && req.files.image3[0]) {
+                uploadPromises.push(
+                    cloudinary.uploader.upload(req.files.image3[0].path, {
+                        resource_type: 'image',
+                    }).then(uploadResponse => {
+                        imageUrl3 = uploadResponse.secure_url;
+                        console.log('Image 3 uploaded successfully:', imageUrl3);
+                    }).catch(error => {
+                        console.error('Error uploading image 3:', error);
+                    })
+                );
+            }
+
+            await Promise.all(uploadPromises);
+        }
+
+        const newProject = {
+            image: imageUrl,
+            image2: imageUrl2,
+            image3: imageUrl3,
+            title,
+            about,
+            link,
+        };
+
+        console.log('New project data:', newProject);
+
+        const { id } = req.params;
+
+        const updatedPortfolio = await Portfolio.findByIdAndUpdate(
+            id,
+            { $push: { projects: newProject } },
+            { new: true }
+        );
+
+        if (!updatedPortfolio) {
+            return res.status(404).json({ message: 'Portfolio not found' });
+        }
+
+        res.status(200).json(updatedPortfolio);
     } catch (error) {
-      res.status(500).json({ message: error.message });
-      console.log('Error creating project:', error.message);
+        res.status(500).json({ message: error.message });
+        console.log({ message: error.message });
     }
-  };
+};
