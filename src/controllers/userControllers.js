@@ -265,26 +265,30 @@ export const getSingleUser = async (req, res) => {
 export const deleteProject = async (req, res) => {
     try {
       const { id, projectId } = req.params;
+
+      const updatedPortfolio = await Portfolio.findByIdAndUpdate(
+        id,
+        { $pull: { projects: { _id: projectId } } },
+        { new: true } 
+      );
   
-      const portfolio = await Portfolio.findById(id);
-  
-      if (!portfolio) {
+      if (!updatedPortfolio) {
         return res.status(404).json({ message: 'Portfolio not found' });
       }
-  
-      const projectIndex = portfolio.projects.findIndex(
+
+      const projectToDelete = updatedPortfolio.projects.find(
         (project) => project._id.toString() === projectId
       );
   
-      if (projectIndex === -1) {
-        return res.status(404).json({ message: 'Project not found' });
+      if (projectToDelete) {
+        const { image, image2, image3 } = projectToDelete;
+        
+        if (image) await cloudinary.uploader.destroy(image.public_id);
+        if (image2) await cloudinary.uploader.destroy(image2.public_id);
+        if (image3) await cloudinary.uploader.destroy(image3.public_id);
       }
   
-      portfolio.projects.splice(projectIndex, 1);
-  
-      await portfolio.save();
-  
-      res.status(200).json({ message: 'Project deleted successfully' });
+      res.status(200).json({ message: 'Project deleted successfully', updatedPortfolio });
     } catch (error) {
       res.status(500).json({ message: 'Server error', error: error.message });
       console.error('Error deleting project:', error);

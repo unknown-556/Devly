@@ -1,5 +1,40 @@
 import mongoose from 'mongoose';
 
+const projectSchema = new mongoose.Schema({
+    image: {
+        type: String, 
+    },
+    image2: {
+        type: String, 
+    },
+    image3: {
+        type: String, 
+    },
+    title: {
+        type: String,
+        required: true,
+    },
+    about: {
+        type: String,
+        required: true,
+    },
+    tools: {
+        type: [String]
+    },
+    link: {
+        type: String,
+        required: true,
+    },
+    accounts: [{
+        link: {
+            type: String,
+        },
+        platform: {
+            type: String,
+        }
+    }],
+}, { timestamps: true });
+
 const PortfolioSchema = new mongoose.Schema({
     firstname: {
         type: String,
@@ -18,91 +53,67 @@ const PortfolioSchema = new mongoose.Schema({
         type: String,
         ref: "User",
         required: true,
-        
     },
     number: {
         type: String,
         ref: "User",
-        required: true
+        required: true,
     },
     bio: {
-        type: String
+        type: String,
     },
     experience: {
-        type: String
+        type: String,
     },
     title: {
-        type: String
+        type: String,
     },
     certificates: {
-        type: [String]
+        type: [String],
     },
-    degrees:  [{
-        course:{
-         type: String
+    degrees: [{
+        course: {
+            type: String,
         },
-        degree:{
-         type: String
+        degree: {
+            type: String,
         },
-        institution:{
-            type: String
+        institution: {
+            type: String,
         },
-        year:{
-            type: String
-        },   
-        
-
+        year: {
+            type: String,
+        },
     }],
     skills: {
-        type: [String]
+        type: [String],
     },
     languages: {
-        type: [String]
+        type: [String],
     },
     accounts: [{
-           link:{
-            type: String
-           },
-           platform:{
-            type: String
-           }
+        link: {
+            type: String,
+        },
+        platform: {
+            type: String,
+        }
     }],
     country: {  
-        type: String
+        type: String,
     },
     stack: {
         type: String,
     },
     profileImage: {
         type: String,
-        default: '' 
+        default: '',
     },
-    projects: [{
-        image: {
-            type: String
-        },
-        title: {
-            type: String
-        },
-        About: {
-            type: String    
-        },
-        link: {
-            type: String
-        },
-        accounts: [{
-            link:{
-             type: String
-            },
-            platform:{
-             type: String
-            }
-     }]
-    }],
+    projects: [projectSchema], 
     status: {
         type: String,
         enum: ['Available', 'Unavailable'],
-        default: 'Available'
+        default: 'Available',
     }
 });
 
