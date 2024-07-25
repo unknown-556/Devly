@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Project</title>
+</head>
+<body>
+    <h1>Add New Project</h1>
+    <form id="projectForm" action="http://127.0.0.1:1112/api/connect/post/project/669f8105c9e647ce1c80a9b8" method="post" enctype="multipart/form-data">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="about">About:</label>
+        <textarea id="about" name="about" required></textarea><br><br>
+
+        <label for="link">Project Link:</label>
+        <input type="url" id="link" name="link" required><br><br>
+
+        <label for="tools">Tools:</label>
+        <select id="tools" name="tools" multiple>
+            <option value="tool1">Tool 1</option>
+            <option value="tool2">Tool 2</option>
+            <option value="tool3">Tool 3</option>
+            <!-- Add more options as needed -->
+        </select><br><br>
+
+        <label for="duration">Duration:</label>
+        <select id="duration" name="duration">
+            <option value="1 month">1 month</option>
+            <option value="3 months">3 months</option>
+            <option value="6 months">6 months</option>
+            <option value="1 year">1 year</option>
+            <!-- Add more options as needed -->
+        </select><br><br>
+
+        <label for="startedMonth">Started Month:</label>
+        <select id="startedMonth" name="started[month]">
+            <option value="January">January</option>
+            <option value="February">February</option>
+            <option value="March">March</option>
+            <option value="April">April</option>
+            <!-- Add more options as needed -->
+        </select><br><br>
+
+        <label for="startedYear">Started Year:</label>
+        <select id="startedYear" name="started[year]">
+            <option value="2020">2020</option>
+            <option value="2021">2021</option>
+            <option value="2022">2022</option>
+            <option value="2023">2023</option>
+            <!-- Add more options as needed -->
+        </select><br><br>
+
+        <label for="image">Image 1:</label>
+        <input type="file" id="image" name="image" accept="image/*" required><br><br>
+
+        <label for="image2">Image 2:</label>
+        <input type="file" id="image2" name="image2" accept="image/*"><br><br>
+
+        <label for="image3">Image 3:</label>
+        <input type="file" id="image3" name="image3" accept="image/*"><br><br>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        document.getElementById('projectForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            fetch('http://127.0.0.1:1112/api/connect/post/project/669f8105c9e647ce1c80a9b8', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Project added successfully!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error adding project. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>

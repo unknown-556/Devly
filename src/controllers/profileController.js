@@ -116,7 +116,10 @@ export const addProject = async (req, res) => {
         console.log('Request body:', req.body); 
         console.log('Request files:', req.files); // Log the files to check if they are received
 
-        const { title, about, link } = req.body;
+        const { title, about, link, tools,
+            accounts,
+            duration,
+            started } = req.body;
 
         let imageUrl = "";
         let imageUrl2 = "";
@@ -174,6 +177,10 @@ export const addProject = async (req, res) => {
             title,
             about,
             link,
+            tools,
+            accounts,
+            duration,
+            started,
         };
 
         console.log('New project data:', newProject);
@@ -194,5 +201,27 @@ export const addProject = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
         console.log({ message: error.message });
+    }
+};
+
+
+export const deleteAllProjects = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const updatedPortfolio = await Portfolio.findByIdAndUpdate(
+            id,
+            { $set: { projects: [] } },
+            { new: true }
+        );
+
+        if (!updatedPortfolio) {
+            return res.status(404).json({ message: 'Portfolio not found' });
+        }
+
+        res.status(200).json({ message: 'All projects deleted successfully', updatedPortfolio });
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error: error.message });
+        console.error('Error deleting all projects:', error);
     }
 };

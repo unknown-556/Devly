@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router()
 
-import { createPortfolio, toggleStatus, addProject } from "../controllers/profileController.js";
+import { createPortfolio, toggleStatus, addProject, deleteAllProjects } from "../controllers/profileController.js";
 import auth from "../middleware/auth.js";
 import upload from "../config/multer.js";
 
@@ -15,6 +15,8 @@ router.post("/project/:id", upload.fields([
     { name: 'image2', maxCount: 1 },
     { name: 'image3', maxCount: 1 }
 ]), addProject);
+
+router.delete('/portfolio/:id/projects', deleteAllProjects);
 
 
 

@@ -21,6 +21,17 @@ const projectSchema = new mongoose.Schema({
     tools: {
         type: [String]
     },
+    duration: {
+        type: [String]
+    },
+    started: {
+        month: {
+            type: String
+        },
+        year: {
+            type: String
+        }
+    },
     link: {
         type: String,
         required: true,
