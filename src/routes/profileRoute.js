@@ -10,12 +10,12 @@ router.post("/profile", auth, upload.single('image'), createPortfolio)
 
 router.patch('/status/toggle', auth, toggleStatus);
 
-router.post("/project/:id", upload.fields([
+router.post('/project/:id', upload.fields([
     { name: 'image', maxCount: 1 },
     { name: 'image2', maxCount: 1 },
     { name: 'image3', maxCount: 1 },
-    { name: 'pdf', maxCount: 1 },
-]), addProject);
+    { name: 'pdf', maxCount: 1 }
+]), addProject)
 
 router.delete('/portfolio/:id/projects', deleteAllProjects);
 

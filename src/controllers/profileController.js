@@ -111,74 +111,48 @@ cloudinary.config({
 
 
 
+
+
 export const addProject = async (req, res) => {
     try {
-        console.log('Request body:', req.body); 
-        console.log('Request files:', req.files); // Log the files to check if they are received
-
-        const { title, about, link, tools, accounts, duration, started } = req.body;
+        const { image, image2, image3, pdf, title, about, link, tools, accounts, duration, started } = req.body;
+        console.log('Request body:', req.body);
 
         let imageUrl = "";
         let imageUrl2 = "";
         let imageUrl3 = "";
         let pdfUrl = "";
 
-        if (req.files) {
-            const uploadPromises = [];
+        if (image) {
+            const uploadResponse = await cloudinary.uploader.upload(`data:image/png;base64,${image}`, {
+                resource_type: 'auto',
+            });
+            imageUrl = uploadResponse.secure_url;
+            console.log('Image 1 uploaded successfully:', imageUrl);
+        }
 
-            if (req.files.image && req.files.image[0]) {
-                uploadPromises.push(
-                    cloudinary.uploader.upload(req.files.image[0].path, {
-                        resource_type: 'image',
-                    }).then(uploadResponse => {
-                        imageUrl = uploadResponse.secure_url;
-                        console.log('Image 1 uploaded successfully:', imageUrl);
-                    }).catch(error => {
-                        console.error('Error uploading image 1:', error);
-                    })
-                );
-            }
+        if (image2) {
+            const uploadResponse = await cloudinary.uploader.upload(`data:image/png;base64,${image2}`, {
+                resource_type: 'auto',
+            });
+            imageUrl2 = uploadResponse.secure_url;
+            console.log('Image 2 uploaded successfully:', imageUrl2);
+        }
 
-            if (req.files.image2 && req.files.image2[0]) {
-                uploadPromises.push(
-                    cloudinary.uploader.upload(req.files.image2[0].path, {
-                        resource_type: 'image',
-                    }).then(uploadResponse => {
-                        imageUrl2 = uploadResponse.secure_url;
-                        console.log('Image 2 uploaded successfully:', imageUrl2);
-                    }).catch(error => {
-                        console.error('Error uploading image 2:', error);
-                    })
-                );
-            }
+        if (image3) {
+            const uploadResponse = await cloudinary.uploader.upload(`data:image/png;base64,${image3}`, {
+                resource_type: 'auto',
+            });
+            imageUrl3 = uploadResponse.secure_url;
+            console.log('Image 3 uploaded successfully:', imageUrl3);
+        }
 
-            if (req.files.image3 && req.files.image3[0]) {
-                uploadPromises.push(
-                    cloudinary.uploader.upload(req.files.image3[0].path, {
-                        resource_type: 'image',
-                    }).then(uploadResponse => {
-                        imageUrl3 = uploadResponse.secure_url;
-                        console.log('Image 3 uploaded successfully:', imageUrl3);
-                    }).catch(error => {
-                        console.error('Error uploading image 3:', error);
-                    })
-                );
-            }
-
-            if (req.files.pdf && req.files.pdf[0]) {
-                uploadPromises.push(
-                    cloudinary.uploader.upload(req.files.pdf[0].path, {
-                        resource_type: 'raw', 
-                    }).then(uploadResponse => {
-                        pdfUrl = uploadResponse.secure_url;
-                        console.log('PDF uploaded successfully:', pdfUrl);
-                    }).catch(error => {
-                        console.error('Error uploading PDF:', error);
-                    })
-                );
-            }
-
-            await Promise.all(uploadPromises);
+        if (pdf) {
+            const uploadResponse = await cloudinary.uploader.upload(`data:application/pdf;base64,${pdf}`, {
+                resource_type: 'auto',
+            });
+            pdfUrl = uploadResponse.secure_url;
+            console.log('PDF uploaded successfully:', pdfUrl);
         }
 
         const newProject = {
@@ -215,6 +189,9 @@ export const addProject = async (req, res) => {
         console.log({ message: error.message });
     }
 };
+
+
+
 
 
 
