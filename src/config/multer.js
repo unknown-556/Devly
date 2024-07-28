@@ -13,16 +13,18 @@ cloudinary.config({
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: (req, file) => {
-    const allowedFormats = ['jpg', 'png', 'jpeg'];
-    let resourceType = 'image';
+  params: async (req, file) => {
+    let folder = 'apply';
+    let resource_type = 'image';
+
     if (file.mimetype === 'application/pdf') {
-      resourceType = 'raw';
+      resource_type = 'raw'; 
     }
+
     return {
-      folder: 'apply',
-      allowed_formats: allowedFormats,
-      resource_type: resourceType,
+      folder: folder,
+      resource_type: resource_type,
+      allowed_formats: ['jpg', 'png', 'jpeg', 'pdf'],
     };
   },
 });

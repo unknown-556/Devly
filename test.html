@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Add New Project</h1>
-    <form id="projectForm" action="http://127.0.0.1:1112/api/connect/post/project/669ec31a736e78f938a8a985" method="post" enctype="multipart/form-data">
+    <form id="projectForm" action="http://127.0.0.1:1112/api/connect/post/project/669f8105c9e647ce1c80a9b8" method="post" enctype="multipart/form-data">
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required><br><br>
 
@@ -65,13 +65,16 @@
         <button type="button" id="addAccount">Add Another Account</button><br><br>
 
         <label for="image">Image 1:</label>
-        <input type="file" id="image" name="image" accept="image/*" required><br><br>
+        <input type="file" id="image" name="image" accept="image/*" ><br><br>
 
         <label for="image2">Image 2:</label>
         <input type="file" id="image2" name="image2" accept="image/*"><br><br>
 
         <label for="image3">Image 3:</label>
         <input type="file" id="image3" name="image3" accept="image/*"><br><br>
+
+        <label for="pdf">Pdf:</label>
+        <input type="file" id="pdf" name="pdf"><br><br>
 
         <button type="submit">Submit</button>
     </form>
@@ -119,7 +122,7 @@ document.getElementById('addAccount').addEventListener('click', function() {
             event.preventDefault();
             const formData = new FormData(this);
 
-            fetch('http://127.0.0.1:1112/api/connect/post/project/669ec31a736e78f938a8a985', {
+            fetch('http://127.0.0.1:1112/api/connect/post/project/669f8105c9e647ce1c80a9b8', {
                 method: 'POST',
                 body: formData
             })

@@ -35,6 +35,12 @@ app.use('/api/connect', router);
 app.use(express.json())
 
 
+app.use((req, res, next) => {
+    res.setHeader('Connection', 'keep-alive');
+    next();
+  });
+
+
 
 
 io.on('connection', (socket) => {
