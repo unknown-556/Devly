@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Add New Project</h1>
-    <form id="projectForm" action="http://127.0.0.1:1112/api/connect/post/project/669f8105c9e647ce1c80a9b8" method="post" enctype="multipart/form-data">
+    <form id="projectForm" action="http://127.0.0.1:1112/api/connect/post/project/669ec31a736e78f938a8a985" method="post" enctype="multipart/form-data">
         <label for="title">Title:</label>
         <input type="text" id="title" name="title" required><br><br>
 
@@ -19,9 +19,11 @@
 
         <label for="tools">Tools:</label>
         <select id="tools" name="tools" multiple>
-            <option value="tool1">Tool 1</option>
-            <option value="tool2">Tool 2</option>
-            <option value="tool3">Tool 3</option>
+            <option value="React Native">React Native</option>
+            <option value="Firebase">Firebase</option>
+            <option value="Redux">Redux</option>
+            <option value="Expo">Expo</option>
+            <option value="Jest">Jest</option>
             <!-- Add more options as needed -->
         </select><br><br>
 
@@ -52,6 +54,16 @@
             <!-- Add more options as needed -->
         </select><br><br>
 
+        <div id="accountsSection">
+            <label for="accountLink1">Account Link 1:</label>
+            <input type="url" id="accountLink1" name="accounts[0][link]"><br><br>
+
+            <label for="accountPlatform1">Account Platform 1:</label>
+            <input type="text" id="accountPlatform1" name="accounts[0][platform]"><br><br>
+        </div>
+
+        <button type="button" id="addAccount">Add Another Account</button><br><br>
+
         <label for="image">Image 1:</label>
         <input type="file" id="image" name="image" accept="image/*" required><br><br>
 
@@ -65,11 +77,49 @@
     </form>
 
     <script>
+
+let accountIndex = 1;
+
+document.getElementById('addAccount').addEventListener('click', function() {
+    const accountsSection = document.getElementById('accountsSection');
+
+    const accountLinkLabel = document.createElement('label');
+    accountLinkLabel.setAttribute('for', `accountLink${accountIndex + 1}`);
+    accountLinkLabel.textContent = `Account Link ${accountIndex + 1}:`;
+    accountsSection.appendChild(accountLinkLabel);
+
+    const accountLinkInput = document.createElement('input');
+    accountLinkInput.setAttribute('type', 'url');
+    accountLinkInput.setAttribute('id', `accountLink${accountIndex + 1}`);
+    accountLinkInput.setAttribute('name', `accounts[${accountIndex}][link]`);
+    accountsSection.appendChild(accountLinkInput);
+
+    accountsSection.appendChild(document.createElement('br'));
+    accountsSection.appendChild(document.createElement('br'));
+
+    const accountPlatformLabel = document.createElement('label');
+    accountPlatformLabel.setAttribute('for', `accountPlatform${accountIndex + 1}`);
+    accountPlatformLabel.textContent = `Account Platform ${accountIndex + 1}:`;
+    accountsSection.appendChild(accountPlatformLabel);
+
+    const accountPlatformInput = document.createElement('input');
+    accountPlatformInput.setAttribute('type', 'text');
+    accountPlatformInput.setAttribute('id', `accountPlatform${accountIndex + 1}`);
+    accountPlatformInput.setAttribute('name', `accounts[${accountIndex}][platform]`);
+    accountsSection.appendChild(accountPlatformInput);
+
+    accountsSection.appendChild(document.createElement('br'));
+    accountsSection.appendChild(document.createElement('br'));
+
+    accountIndex++;
+});
+
+
         document.getElementById('projectForm').addEventListener('submit', function(event) {
             event.preventDefault();
             const formData = new FormData(this);
 
-            fetch('http://127.0.0.1:1112/api/connect/post/project/669f8105c9e647ce1c80a9b8', {
+            fetch('http://127.0.0.1:1112/api/connect/post/project/669ec31a736e78f938a8a985', {
                 method: 'POST',
                 body: formData
             })

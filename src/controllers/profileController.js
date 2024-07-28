@@ -116,14 +116,12 @@ export const addProject = async (req, res) => {
         console.log('Request body:', req.body); 
         console.log('Request files:', req.files); // Log the files to check if they are received
 
-        const { title, about, link, tools,
-            accounts,
-            duration,
-            started } = req.body;
+        const { title, about, link, tools, accounts, duration, started } = req.body;
 
         let imageUrl = "";
         let imageUrl2 = "";
         let imageUrl3 = "";
+        let pdfUrl = "";
 
         if (req.files) {
             const uploadPromises = [];
@@ -167,6 +165,19 @@ export const addProject = async (req, res) => {
                 );
             }
 
+            if (req.files.pdf && req.files.pdf[0]) {
+                uploadPromises.push(
+                    cloudinary.uploader.upload(req.files.pdf[0].path, {
+                        resource_type: 'raw', 
+                    }).then(uploadResponse => {
+                        pdfUrl = uploadResponse.secure_url;
+                        console.log('PDF uploaded successfully:', pdfUrl);
+                    }).catch(error => {
+                        console.error('Error uploading PDF:', error);
+                    })
+                );
+            }
+
             await Promise.all(uploadPromises);
         }
 
@@ -174,6 +185,7 @@ export const addProject = async (req, res) => {
             image: imageUrl,
             image2: imageUrl2,
             image3: imageUrl3,
+            pdf: pdfUrl,
             title,
             about,
             link,
@@ -203,6 +215,7 @@ export const addProject = async (req, res) => {
         console.log({ message: error.message });
     }
 };
+
 
 
 export const deleteAllProjects = async (req, res) => {

@@ -10,6 +10,9 @@ const projectSchema = new mongoose.Schema({
     image3: {
         type: String, 
     },
+    pdf: {
+        type: String
+    },
     title: {
         type: String,
         required: true,
