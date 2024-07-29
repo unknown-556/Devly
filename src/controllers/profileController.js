@@ -124,7 +124,7 @@ export const addProject = async (req, res) => {
         let pdfUrl = "";
 
         if (image) {
-            const uploadResponse = await cloudinary.uploader.upload(`data:image/png;base64,${image}`, {
+            const uploadResponse = await cloudinary.uploader.upload(image, {
                 resource_type: 'auto',
             });
             imageUrl = uploadResponse.secure_url;
@@ -132,7 +132,7 @@ export const addProject = async (req, res) => {
         }
 
         if (image2) {
-            const uploadResponse = await cloudinary.uploader.upload(`data:image/png;base64,${image2}`, {
+            const uploadResponse = await cloudinary.uploader.upload(image2, {
                 resource_type: 'auto',
             });
             imageUrl2 = uploadResponse.secure_url;
@@ -140,7 +140,7 @@ export const addProject = async (req, res) => {
         }
 
         if (image3) {
-            const uploadResponse = await cloudinary.uploader.upload(`data:image/png;base64,${image3}`, {
+            const uploadResponse = await cloudinary.uploader.upload(image3, {
                 resource_type: 'auto',
             });
             imageUrl3 = uploadResponse.secure_url;
@@ -148,7 +148,7 @@ export const addProject = async (req, res) => {
         }
 
         if (pdf) {
-            const uploadResponse = await cloudinary.uploader.upload(`data:application/pdf;base64,${pdf}`, {
+            const uploadResponse = await cloudinary.uploader.upload(pdf, {
                 resource_type: 'auto',
             });
             pdfUrl = uploadResponse.secure_url;
