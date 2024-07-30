@@ -15,11 +15,9 @@ const projectSchema = new mongoose.Schema({
     },
     title: {
         type: String,
-        required: true,
     },
     about: {
         type: String,
-        required: true,
     },
     tools: {
         type: [String]
@@ -37,7 +35,6 @@ const projectSchema = new mongoose.Schema({
     },
     link: {
         type: String,
-        required: true,
     },
     accounts: [{
         link: {

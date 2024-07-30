@@ -149,7 +149,7 @@ export const addProject = async (req, res) => {
 
         if (pdf) {
             const uploadResponse = await cloudinary.uploader.upload(pdf, {
-                resource_type: 'auto',
+                resource_type: 'raw',
             });
             pdfUrl = uploadResponse.secure_url;
             console.log('PDF uploaded successfully:', pdfUrl);
