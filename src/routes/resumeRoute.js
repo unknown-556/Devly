@@ -3,6 +3,7 @@ import auth from '../middleware/auth.js';
 import {
     addEducation,
     addExperience,
+    addResume,
     createResume,
     deleteResume,
     getResume
@@ -12,9 +13,11 @@ const router = express.Router();
 
 router.post('/resume', auth, createResume);
 router.get('/resume/:email', auth, getResume)
-router.delete('/delete/resume/:id', auth, deleteResume);
+router.delete('/portfolio/:id/resume', auth, deleteResume);
 
 router.post('/add/education/:id', addEducation)
 router.post('/add/experience/:id', addExperience)
+
+router.post('/add/:id', auth, addResume)
 
 export default router;

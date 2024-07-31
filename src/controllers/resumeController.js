@@ -1,3 +1,4 @@
+import Portfolio from '../models/profileModel.js';
 import Resume from '../models/resumeModel.js';
 import User from '../models/userModel.js';
 
@@ -22,6 +23,47 @@ export const createResume = async (req, res) => {
         return res.json({message: error.message})
     }
 };
+
+
+export const addResume = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id);
+        const {dob, location, skills, About, Experience, Education, } = req.body
+        console.log(req.body)
+
+
+        const newResume = {
+            dob, 
+            email: user.email,
+            number: user.number,
+            location, 
+            skills, 
+            About, 
+            Experience, 
+            Education
+
+        }
+
+        const { id } = req.params;
+
+        const updatedPortfolio = await Portfolio.findByIdAndUpdate(
+            id,
+            { $push: { resume: newResume } },
+            { new: true }
+        );
+
+        if (!updatedPortfolio) {
+            return res.status(404).json({ message: 'Portfolio not found' });
+        }
+
+        res.status(200).json(updatedPortfolio);
+
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+        console.log({ message: error.message });
+    }
+}
 
 
 export const getResume = async (req, res) => {
@@ -111,12 +153,21 @@ export const addEducation = async (req, res) => {
 
 export const deleteResume = async (req, res) => {
     try {
-        const resume = await Resume.findByIdAndDelete(req.params.id);
-        if (!resume) {
-            return res.status(404).json({ message: 'Resume not found' });
+        const { id } = req.params;
+
+        const updatedPortfolio = await Portfolio.findByIdAndUpdate(
+            id,
+            { $set: { resume: [] } },
+            { new: true }
+        );
+
+        if (!updatedPortfolio) {
+            return res.status(404).json({ message: 'Portfolio not found' });
         }
-        res.status(200).json({ message: 'Resume deleted successfully' });
+
+        res.status(200).json({ message: 'All projects deleted successfully', updatedPortfolio });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting resume', error });
+        res.status(500).json({ message: 'Server error', error: error.message });
+        console.error('Error deleting all projects:', error);
     }
 };
