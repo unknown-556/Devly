@@ -48,9 +48,8 @@ export const signUp = async (req, res) => {
                 email,
             })
             await newUser.save()
-            // res.status(200).json({message: 'User registered succesfully',newUser})
             console.log('User registered succesfully',newUser);
-            return res.status.json({message: 'User registered succesfully'}, newUser)
+            return res.status(200).json({ message: 'User registered successfully' }, newUser)
         }
     } catch (error) {
         console.log('INTERNAL SERVER ERROR',error.message)
