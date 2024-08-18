@@ -38,23 +38,6 @@ const ResumeSchema = new mongoose.Schema({
             type:String
         }
     }],
-    // v_experience: [{
-    //     Started: {
-    //         type: String,
-    //     },
-    //     Ended: {
-    //         type: String
-    //     },
-    //     Org: {
-    //         type: String
-    //     },
-    //     Title: {
-    //         type: String
-    //     },
-    //     Description: {
-    //         type:String
-    //     }
-    // }],
     Education: [{
         Started: {
             type: String,

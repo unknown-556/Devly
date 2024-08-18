@@ -1,7 +1,7 @@
 {
-  "name": "betta",
+  "name": "Devly",
   "version": "1.0.0",
-  "description": "",
+  "description": "A Network Portfolio Site",
   "type": "module",
   "main": "sever.js",
   "scripts": {

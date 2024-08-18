@@ -4,27 +4,6 @@ import User from '../models/userModel.js';
 
 
 
-export const createResume = async (req, res) => {
-       try {
-            const user = await User.findById(req.user._id);
-
-               
-                    const resume = new Resume({
-                        ...req.body,
-                        email: user.email,
-                        number: user.number,
-                    });
-
-        await resume.save();
-        res.status(201).send(resume);
-    } catch (error) {
-        res.status(400).send({ error: error.message });
-        console.error('Error creating Resume:', error);
-        return res.json({message: error.message})
-    }
-};
-
-
 export const addResume = async (req, res) => {
     try {
         const user = await User.findById(req.user._id);
@@ -66,108 +45,100 @@ export const addResume = async (req, res) => {
 }
 
 
-export const getResume = async (req, res) => {
-    try {
-        const email = req.user.email
-        const resume = await Resume.findOne({email});
-        
-        if (!resume) {
-            return res.status(404).json({ message: 'Resume not found' });
-        }
 
-        return res.json({ resume })
-        // res.status(200).json(resume);
-
-    } catch (error) {
-        return res.status(500).json({ message: 'Error fetching resume', error });
-    }
-};
-
-export const addExperience = async (req, res) => {
-    try {
-        const {Started, Ended, Org, Title, Description } = req.body
-        console.log(req.body)
-
-
-        const newExperience = {
-            Started,
-            Ended, 
-            Org, 
-            Title, 
-            Description
-
-        }
-
-        const { id } = req.params;
-
-        const updatedResume = await Resume.findByIdAndUpdate(
-            id,
-            { $push: { Experience: newExperience } },
-            { new: true }
-        );
-
-        if (!updatedResume) {
-            return res.status(404).json({ message: 'Resume not found' });
-        }
-
-
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-        console.log({ message: error.message });
-    }
-}
 
 export const addEducation = async (req, res) => {
+    const { id } = req.params;
+    const { education } = req.body;
     try {
-        const {Started, Ended, University, Degree, Description } = req.body
-        console.log(req.body)
-
-
-        const newEducation = {
-            Started,
-            Ended, 
-            University, 
-            Degree, 
-            Description
-
-        }
-
-        const { id } = req.params;
-
-        const updatedResume = await Resume.findByIdAndUpdate(
-            id,
-            { $push: { Education: newEducation } },
-            { new: true }
-        );
-
-        if (!updatedResume) {
-            return res.status(404).json({ message: 'Resume not found' });
-        }
-
-
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-        console.log({ message: error.message });
-    }
-}
-
-export const deleteResume = async (req, res) => {
-    try {
-        const { id } = req.params;
-
-        const updatedPortfolio = await Portfolio.findByIdAndUpdate(
-            id,
-            { $set: { resume: [] } },
-            { new: true }
-        );
-
-        if (!updatedPortfolio) {
+        const portfolio = await Portfolio.findById(id);
+        if (!portfolio) {
             return res.status(404).json({ message: 'Portfolio not found' });
         }
 
-        res.status(200).json({ message: 'All projects deleted successfully', updatedPortfolio });
+        const resume = portfolio.resume[0];
+
+        if (resume) {
+            resume.Education.push(education);
+            await portfolio.save();
+            res.status(200).json({ message: 'Education added successfully', resume });
+        } else {
+            res.status(404).json({ message: 'Resume not found' });
+        }
     } catch (error) {
-        res.status(500).json({ message: 'Server error', error: error.message });
-        console.error('Error deleting all projects:', error);
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+
+export const addExperience = async (req, res) => {
+    const { id } = req.params;
+    const { experience } = req.body;
+
+    try {
+        const portfolio = await Portfolio.findById(id);
+        if (!portfolio) {
+            return res.status(404).json({ message: 'Portfolio not found' });
+        }
+
+        const resume = portfolio.resume[0];
+
+        if (resume) {
+            resume.Experience.push(experience);
+            await portfolio.save();
+            res.status(200).json({ message: 'Experience added successfully', resume });
+        } else {
+            res.status(404).json({ message: 'Resume not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+
+export const deleteEducation = async (req, res) => {
+    const { id, eduId } = req.params;
+
+    try {
+        const portfolio = await Portfolio.findById(id);
+        if (!portfolio) {
+            return res.status(404).json({ message: 'Portfolio not found' });
+        }
+
+        const resume = portfolio.resume[0];
+
+        if (resume) {
+            resume.Education = resume.Education.filter(edu => edu._id.toString() !== eduId);
+            await portfolio.save();
+            res.status(200).json({ message: 'Education deleted successfully', resume });
+        } else {
+            res.status(404).json({ message: 'Resume not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
+    }
+};
+
+
+export const deleteExperience = async (req, res) => {
+    const { id, expId } = req.params; 
+
+    try {
+        const portfolio = await Portfolio.findById(id);
+        if (!portfolio) {
+            return res.status(404).json({ message: 'Portfolio not found' });
+        }
+
+        const resume = portfolio.resume[0];
+
+        if (resume) {
+            resume.Experience = resume.Experience.filter(exp => exp._id.toString() !== expId);
+            await portfolio.save();
+            res.status(200).json({ message: 'Experience deleted successfully', resume });
+        } else {
+            res.status(404).json({ message: 'Resume not found' });
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Server error', error });
     }
 };

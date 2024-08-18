@@ -2,7 +2,8 @@ import Portfolio from '../models/profileModel.js';
 import User from '../models/userModel.js';
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
-import { formatZodError } from '../../errorMessage.js';
+import transporter from '../config/email.js';
+
 
 dotenv.config();
 
@@ -61,6 +62,39 @@ export const createPortfolio = async (req, res) => {
 
         await portfolio.save();
         res.status(201).send(portfolio);
+        
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: user.email, 
+            subject: 'New Portfolio Created',
+            text: `A new portfolio has been created with this email.`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log('Error sending email:', error);
+            } else {
+                console.log('Email sent successfully:', info.response);
+            }
+        });
+
+        const mail = {
+            from: process.env.EMAIL_USER,
+            to: 'obasiobasi677@gmail.com', 
+            subject: 'New Portfolio Created',
+            text: `A new portfolio titled has been created.`
+        };
+
+        transporter.sendMail(mail, (error, info) => {
+            if (error) {
+                console.log('Error sending email:', error);
+            } else {
+                console.log('Email sent successfully:', info.response);
+            }
+        });
+
+        
+        
     } catch (error) {
         res.status(400).send({ error: error.message });
         console.error('Error creating Portfolio:', error);

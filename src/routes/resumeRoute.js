@@ -4,16 +4,16 @@ import {
     addEducation,
     addExperience,
     addResume,
-    createResume,
-    deleteResume,
-    getResume
+    deleteEducation,
+    deleteExperience,
 } from '../controllers/resumeController.js';
 
 const router = express.Router();
 
-router.post('/resume', auth, createResume);
-router.get('/resume/:email', auth, getResume)
-router.delete('/portfolio/:id/resume', auth, deleteResume);
+router.put('/portfolios/:id/education', addEducation);
+router.put('/portfolios/:id/experience', addExperience);
+router.delete('/portfolios/:id/education/:eduId', deleteEducation);
+router.delete('/portfolios/:id/experience/:expId', deleteExperience);
 
 router.post('/add/education/:id', addEducation)
 router.post('/add/experience/:id', addExperience)

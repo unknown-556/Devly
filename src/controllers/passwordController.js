@@ -2,7 +2,6 @@ import cryptoHash from 'crypto';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import User from '../models/userModel.js';
-import { generateToken } from '../utils/jwt.js';
 
 const hashValue = (value) => {
     const hash = cryptoHash.createHash('sha256');
